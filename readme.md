@@ -7,6 +7,10 @@ That's the sort of thing computers are great at doing; why don't we just let you
 This Python library -- in tandem with special "Enrichable" versions of Saleae Logic analyzers -- makes it easy for you to enrich the data displayed so you can provide your own text and markers to display for each frame.
 Now you can focus on solving your actual problem instead of interpreting inscrutible hex values.
 
+## Related
+
+* [saleae-enrichable-spi-analyzer](https://github.com/coddingtonbear/saleae-enrichable-spi-analyzer): A version of the Saleae SPI analyzer that supports enrichment.
+
 ## Installation
 
 Installation is as easy as:
