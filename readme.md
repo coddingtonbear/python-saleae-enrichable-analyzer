@@ -74,7 +74,7 @@ class MySimpleAnalyzer(EnrichableAnalyzer):
         return markers
 
 if __name__ == '__main__':
-    MySimpleAnalyzer(sys.argv[1:])
+    MySimpleAnalyzer.run(sys.argv[1:])
 ```
 
 The methods described below can be implemented for interacting with Saleae Logic.
