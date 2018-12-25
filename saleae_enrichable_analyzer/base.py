@@ -14,9 +14,14 @@ __all__ = [
 
 
 class Channel(enum.Enum):
+    # SPI
     SCK = 0
     MOSI = 1
     MISO = 2
+
+    # I2C
+    SCL = 10
+    SDA = 11
 
 
 class MarkerType(enum.Enum):
