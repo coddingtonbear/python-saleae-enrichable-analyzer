@@ -136,7 +136,9 @@ class EnrichableAnalyzer(object):
         for line in fileinput.input('-'):
             line = line.strip()
 
-            logger.debug(">> %s", line)
+            logger.debug(
+                ">> %s", line.replace('\t', '\033[31m  \u21e5  \033[0m')
+            )
 
             output_line = ""
             if line.startswith('bubble\t'):
