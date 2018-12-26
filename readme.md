@@ -81,7 +81,11 @@ The methods described below can be implemented for interacting with Saleae Logic
 Methods not implemented will automatically be disabled according to the
 "Feature (Enablement)" section above.
 
-See the example `custom_class.py` for an example of this in use.
+See the following examples for concrete implementations:
+
+* [simple_SC16IS7xx.py](
+https://github.com/coddingtonbear/saleae-enrichable-spi-analyzer/blob/master/examples/simple_SC16IS7xx.py): Implements a simple enricher for displaying register, channel, and data for the SC16IS7xx series of SPI UARTs.
+* [simple_ad7995.py](https://github.com/coddingtonbear/saleae-enrichable-i2c-analyzer/blob/master/examples/simple_ad7995.py): Implements a slightly-more completed enricher for displaying detailed configuration and read data for the AD7995 I2C ADC.
 
 ### `handle_bubble`
 
@@ -116,14 +120,18 @@ strings of varying lengths.
         end_sample: int,
         frame_type: int,
         flags: int,
-        mosi_value: int,
-        miso_value: int
+        value1: int,   # SPI: MOSI; I2C: SDA
+        value2: int,   # SPI: MISO; I2C: Undefined
     ) -> List[Marker]:
         return []
 ```
 
 Return markers to display at given sample points.
 By default, no markers are displayed.
+
+This method can be implemented for reasons other than wanting to display
+markers, too --
+it is useful if your script needs to receive all frames of data in the order they were received.  In such cases, you can record your packets in the body of the method, and return an empty list.  See [simple_ad7995.py](https://github.com/coddingtonbear/saleae-enrichable-i2c-analyzer/blob/master/examples/simple_ad7995.py) for a concrete example of that strategy in use.
 
 ### `handle_tabular`
 
@@ -136,8 +144,8 @@ By default, no markers are displayed.
         end_sample: int,
         frame_type: int,
         flags: int,
-        mosi_value: int,
-        miso_value: int
+        value1: int,   # SPI: MOSI; I2C: SDA
+        value2: int,   # SPI: MISO; I2C: Undefined
     ) -> List[str]:
         return []
 ```
