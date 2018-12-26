@@ -10,10 +10,19 @@ Now you can focus on solving your actual problem instead of interpreting inscrut
 ## Related
 
 * [saleae-enrichable-spi-analyzer](https://github.com/coddingtonbear/saleae-enrichable-spi-analyzer): A version of the Saleae SPI analyzer that supports enrichment.
+* [saleae-enrichable-i2c-analyzer](https://github.com/coddingtonbear/saleae-enrichable-i2c-analyzer): A version of the Saleae I2C analyzer that supports enrichment.
 
 ## Installation
 
-Installation is as easy as:
+*Note*: This requires Python 3.4!
+
+If you want to use the latest release; just install directly from pypi:
+
+```
+pip install saleae_enrichable_analyzer
+```
+
+To use the development version, just clone this repository and run:
 
 ```
 pip install .
