@@ -1,4 +1,4 @@
-# python-saleae-enrichable-analyzer
+# Python Tools for Enrichable Saleae Analyzers
 
 The built-in analyzers for the Saleae Logic provides you with only a few basic options for how to display the transferred bytes -- as ascii text, or in one of several numeric formats.
 What if you're working with an device that encodes more than just integer or text data into those bytes, or even stores multiple values in each byte that will require you to either do the math in your head, export the data for post-processing, or display the frame as binary bits so you can directly look at the parts that matter to you?
