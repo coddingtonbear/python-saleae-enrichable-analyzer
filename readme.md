@@ -14,7 +14,7 @@ Now you can focus on solving your actual problem instead of interpreting inscrut
 
 ## Installation
 
-*Note*: This requires Python 3.4!
+*Note*: This requires Python 3.5!
 
 If you want to use the latest release; just install directly from pypi:
 
