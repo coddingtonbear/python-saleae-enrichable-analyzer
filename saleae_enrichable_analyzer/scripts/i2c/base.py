@@ -75,8 +75,9 @@ class I2CAnalyzer(EnrichableAnalyzer):
         value1: int,   # SPI: MOSI; I2C: SDA
         value2: int,   # SPI: MISO; I2C: Undefined
     ):
-        # Data is spread across up to three frames; we need to
-        # gather data across multiple frames to display meaningful data
+        # Data in I2C spread across multiple frames; we need to
+        # gather data across all of those frames to have anything
+        # meanintful to display.
         self.store_frame(
             packet_id,
             frame_index,
