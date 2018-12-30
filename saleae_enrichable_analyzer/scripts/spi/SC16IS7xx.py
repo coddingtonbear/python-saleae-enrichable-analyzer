@@ -2,17 +2,15 @@ import logging
 import sys
 from typing import List, Optional
 
-# Note: this requires that you install the companion Python module
-#  -> https://github.com/coddingtonbear/python-saleae-enrichable-analyzer
-from saleae_enrichable_analyzer import (
-    Channel, EnrichableAnalyzer, Marker, MarkerType
-)
+from saleae_enrichable_analyzer import Channel
+
+from .base import SPIAnalyzer
 
 
 logger = logging.getLogger(__name__)
 
 
-class SC16IS7xxAnalyzer(EnrichableAnalyzer):
+class SC16IS7xxAnalyzer(SPIAnalyzer):
     CHANNEL_NAMES = {
         0b00: 'A',
         0b01: 'B',

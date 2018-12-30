@@ -30,10 +30,10 @@ pip install .
 
 ## Bundled enrichment scripts
 
-This library is bundled with support for a handful of enrichment scripts out-of-the-box;
-you can use any of these by using Python's `-m` option.
-See below for details.
-Note that you may need to replace `python` in the examples below with the path to the relevant Python binary (if you installed this library into a virtual environment, that should be that environment's `python`, of course).
+This library is bundled with a handful of enrichment scripts out-of-the-box;
+you can use any of these by following the instructions below.
+Note that you may need to replace `python` in the examples with the path to the relevant Python binary --
+if you installed this library into a virtual environment, that path should point to that environment's `python`, of course.
 
 ### SPI
 

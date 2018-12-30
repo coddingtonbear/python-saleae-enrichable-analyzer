@@ -2,36 +2,25 @@ import logging
 import sys
 from typing import List, Optional
 
-from saleae_enrichable_analyzer import Channel, EnrichableAnalyzer
+from saleae_enrichable_analyzer import Channel
+
+from .base import I2CAnalyzer
 
 
 logger = logging.getLogger(__name__)
 
 
-class AD7995Analyzer(EnrichableAnalyzer):
+class AD7995Analyzer(I2CAnalyzer):
     def __init__(self, cli_args, *args, **kwargs):
-        super(AD7995Analyzer, self).__init__(*args, **kwargs)
+        super(AD7995Analyzer, self).__init__(cli_args, *args, **kwargs)
 
         self._address = cli_args.i2c_address
         self._bits = cli_args.bits
         self._reference_voltage = cli_args.reference_voltage
 
-        self._packets = {}
-
     @classmethod
     def add_arguments(cls, parser):
-        parser.add_argument(
-            'i2c_address',
-            help=(
-                'The device\'s I2C address as a base-2 integer. As of '
-                'the time of this writing, this is on page 12 of this '
-                'datasheet: https://www.analog.com/media/en/'
-                'technical-documentation/data-sheets/AD7991_7995_7999.pdf '
-                'and will vary depending upon the exact part number '
-                'you have purchased.'
-            ),
-            type=lambda x: int(x, base=2),
-        )
+        I2CAnalyzer.add_arguments(parser)
         parser.add_argument(
             'bits',
             help=(
@@ -52,71 +41,6 @@ class AD7995Analyzer(EnrichableAnalyzer):
             type=float,
             default=None
         )
-
-    def store_frame(
-        self,
-        packet_id,
-        frame_index,
-        frame_type,
-        flags,
-        value,
-    ):
-        if packet_id not in self._packets:
-            self._packets[packet_id] = []
-
-        if not any(
-            f['frame_index'] == frame_index for f in self._packets[packet_id]
-        ):
-            self._packets[packet_id].append({
-                'frame_index': frame_index,
-                'frame_type': frame_type,
-                'flags': flags,
-                'value': value,
-            })
-
-    def get_packet_frames(self, packet_id):
-        return sorted(
-            self._packets.get(packet_id, []),
-            key=lambda f: f['frame_index'],
-        )
-
-    def get_packet_length(self, packet_id):
-        return len(self._packets[packet_id])
-
-    def get_packet_frame_index(self, packet_id, frame_index):
-        return list(
-            map(
-                lambda frame: frame['frame_index'],
-                self.get_packet_frames(packet_id)
-            )
-        ).index(frame_index)
-
-    def get_packet_nth_frame(self, packet_id, idx):
-        return self.get_packet_frames(packet_id)[idx]
-
-    def handle_marker(
-        self,
-        packet_id: Optional[int],
-        frame_index: int,
-        sample_count: int,
-        start_sample: int,
-        end_sample: int,
-        frame_type: int,
-        flags: int,
-        value1: int,   # SPI: MOSI; I2C: SDA
-        value2: int,   # SPI: MISO; I2C: Undefined
-    ):
-        # Data is spread across up to three frames; we need to
-        # gather data across multiple frames to display meaningful data
-        self.store_frame(
-            packet_id,
-            frame_index,
-            frame_type,
-            flags,
-            value1,
-        )
-
-        return []
 
     def get_configuration_settings(self, value):
         """ Returns channels and features enabled in a configuration.
@@ -205,19 +129,10 @@ class AD7995Analyzer(EnrichableAnalyzer):
         direction: Channel,
         value: int
     ) -> List[str]:
-        try:
-            address_frame = self.get_packet_nth_frame(packet_id, 0)
-        except IndexError:
-            logger.error(
-                "Could not find address frame for packet %s",
-                hex(packet_id)
-            )
+        if not self.packet_address_matches(packet_id):
             return []
 
-        if(address_frame['value'] >> 1 != self._address):
-            # This isn't our device; don't return anything!
-            return []
-
+        address_frame = self.get_packet_nth_frame(packet_id, 0)
         is_read = address_frame['value'] & 0b1
         is_write = not is_read
         if (
@@ -317,21 +232,12 @@ class AD7995Analyzer(EnrichableAnalyzer):
         sda: int,
         value2: int,
     ) -> List[str]:
-        no_result = [' ']
+        no_result = [' ']  # Saleae requires that we return _something_
 
-        try:
-            address_frame = self.get_packet_nth_frame(packet_id, 0)
-        except IndexError:
-            logger.error(
-                "Could not find address frame for packet %s",
-                hex(packet_id)
-            )
+        if not self.packet_address_matches(packet_id):
             return no_result
 
-        if(address_frame['value'] >> 1 != self._address):
-            # This isn't our device; don't return anything!
-            return no_result
-
+        address_frame = self.get_packet_nth_frame(packet_id, 0)
         is_read = address_frame['value'] & 0b1
         is_write = not is_read
         if (
