@@ -107,16 +107,32 @@ class AD7995Analyzer(I2CAnalyzer):
 
         return msb + lsb
 
+    def get_adc_voltage(self, value):
+        if not self._reference_voltage:
+            return None
+
+        return (value / (2**self._bits)) * self._reference_voltage
+
     def get_displayable_adc_value(self, value):
         if not self._reference_voltage:
-            return str(value)
+            return [str(value)]
 
         voltage = (value / (2**self._bits)) * self._reference_voltage
 
-        return "{voltage:.4f} V ({raw})".format(
-            voltage=voltage,
-            raw=value,
-        )
+        return [
+            "{voltage:.4f} V ({raw})".format(
+                voltage=voltage,
+                raw=value,
+            ),
+            "{voltage:.4f} V".format(
+                voltage=voltage,
+                raw=value,
+            ),
+            "{voltage:.2f}".format(
+                voltage=voltage,
+                raw=value,
+            )
+        ]
 
     def handle_bubble(
         self,
@@ -214,9 +230,7 @@ class AD7995Analyzer(I2CAnalyzer):
 
                 adc_result = self.get_adc_value(frame_one['value'], value)
 
-                return [
-                    self.get_displayable_adc_value(adc_result)
-                ]
+                return self.get_displayable_adc_value(adc_result)
         return [
             bin(value)
         ]
@@ -285,7 +299,7 @@ class AD7995Analyzer(I2CAnalyzer):
                     chan=channel,
                     value=self.get_displayable_adc_value(
                         adc_result
-                    )
+                    )[0]
                 )
             ]
 
