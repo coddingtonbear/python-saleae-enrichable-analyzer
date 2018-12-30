@@ -195,7 +195,7 @@ markers, too --
 it is useful if your script needs to receive all frames of data in the order they were received.
 In such cases, you can record your packets in the body of the method,
 and return an empty list.
-See the [base I2CAnalyzer class](https://github.com/coddingtonbear/python-saleae-enrichable-analyzer/blob/4211a6262c3980d598a2f8bef5086c843bcfeb60/saleae_enrichable_analyzer/scripts/i2c/base.py#L66) for a concrete example of that strategy in use.
+See the [base I2CAnalyzer class](https://github.com/coddingtonbear/python-saleae-enrichable-analyzer/blob/f617c9fb22c68f06a863dd0197c57e17f085a789/saleae_enrichable_analyzer/scripts/i2c/base.py#L66) for a concrete example of that strategy in use.
 
 ### `handle_tabular`
 
