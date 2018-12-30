@@ -7,7 +7,7 @@ with open(path.join(here, 'readme.md'), encoding='utf-8') as f:
 
 setup(
     name="saleae_enrichable_analyzer",
-    version="1.0",
+    version="1.1",
     description=(
         "Easily generate custom markers and bubble text for arbitrary "
         "protocols"
