@@ -92,7 +92,7 @@ class I2CAnalyzer(EnrichableAnalyzer):
         try:
             address_frame = self.get_packet_nth_frame(packet_id, 0)
         except IndexError:
-            logger.error(
+            logger.debug(
                 "Could not find address frame for packet %s",
                 hex(packet_id)
             )
