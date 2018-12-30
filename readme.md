@@ -137,14 +137,16 @@ if __name__ == '__main__':
 ```
 
 The methods described below can be implemented for interacting with Saleae Logic.
-Methods not implemented will automatically be disabled according to the
-"Feature (Enablement)" section above.
 
-See the following examples for concrete implementations:
+If you'd like to see simple concrete examples,
+you can refer to the following:
 
 * [simple_SC16IS7xx.py](
 https://github.com/coddingtonbear/saleae-enrichable-spi-analyzer/blob/master/examples/simple_SC16IS7xx.py): Implements a simple enricher for displaying register, channel, and data for the SC16IS7xx series of SPI UARTs.
 * [simple_ad7995.py](https://github.com/coddingtonbear/saleae-enrichable-i2c-analyzer/blob/master/examples/simple_ad7995.py): Implements a slightly-more completed enricher for displaying detailed configuration and read data for the AD7995 I2C ADC.
+
+But also be aware that the `scripts` directory contains examples, too,
+but they may be somewhat more advanced in functionality.
 
 ### `handle_bubble`
 
@@ -190,7 +192,10 @@ By default, no markers are displayed.
 
 This method can be implemented for reasons other than wanting to display
 markers, too --
-it is useful if your script needs to receive all frames of data in the order they were received.  In such cases, you can record your packets in the body of the method, and return an empty list.  See [simple_ad7995.py](https://github.com/coddingtonbear/saleae-enrichable-i2c-analyzer/blob/master/examples/simple_ad7995.py) for a concrete example of that strategy in use.
+it is useful if your script needs to receive all frames of data in the order they were received.
+In such cases, you can record your packets in the body of the method,
+and return an empty list.
+See the [base I2CAnalyzer class](https://github.com/coddingtonbear/python-saleae-enrichable-analyzer/blob/4211a6262c3980d598a2f8bef5086c843bcfeb60/saleae_enrichable_analyzer/scripts/i2c/base.py#L66) for a concrete example of that strategy in use.
 
 ### `handle_tabular`
 
