@@ -118,10 +118,32 @@ class EnrichableAnalyzer(object):
                 'DEBUG',
             ]
         )
+        parser.add_argument('--logpath')
         cls.add_arguments(parser)
         args = parser.parse_args(sys_args)
 
-        logging.basicConfig(level=getattr(logging, args.loglevel))
+        log_level = getattr(logging, args.loglevel)
+        root_logger = logging.getLogger()
+        root_logger.setLevel(log_level)
+
+        stderr_stream = logging.StreamHandler(sys.stderr)
+        stderr_stream.setLevel(log_level)
+        stderr_formatter = logging.Formatter(
+            'Enrichment (%(name)s) - %(asctime)s [%(levelname)s]: %(message)s'
+        )
+        stderr_stream.setFormatter(stderr_formatter)
+        root_logger.addHandler(stderr_stream)
+
+        if args.logpath:
+            file_stream = logging.FileHandler(args.logpath)
+            file_stream.setLevel(log_level)
+            file_formatter = logging.Formatter(
+                '(%(name)s) - %(asctime)s [%(levelname)s]: %(message)s'
+            )
+            file_stream.setFormatter(file_formatter)
+            root_logger.addHandler(file_stream)
+
+        logging.basicConfig()
         logging.info(
             "Starting analyzer: {name}".format(
                 name=cls.__name__

@@ -212,3 +212,41 @@ it is useful if your script needs to receive all frames of data in the order the
 Data to display in the tabular "Decoded Protocols" section.
 Due to limitations within Saleae logic: if implemented, this method must return exactly the same number of strings in the result array for each request;
 if you attempt to do otherwise, you may see the following error (sic) "Error: Number of strings in the analyzer results are diffrenet for different display bases" followed by a SIGSEGV.
+
+## Debugging your enrichment script
+
+If Saleae Logic crashes when using your enrichment script,
+it's almost certainly the fault of your script and not Saleae Logic.
+Luckily, debugging is quite easy by using the built-in logging features.
+
+By default, logging is written to stderr,
+but given that most of us do not run Saleae Logic in a terminal, that output isn't immediately visible.
+To see that logging output without running in a terminal,
+you can use the following two flags:
+
+* `--loglevel=LEVEL`: Set the level of reported output.
+  When debugging, you likely want to use `--loglevel=DEBUG`.
+  Valid options (in order of increasing verbosity) include
+  `CRITICAL`, `ERROR`, `WARNING`, `INFO`, and `DEBUG`.
+  The output displayed for a selected level includes the output of all
+  lower-verbosity levels.
+* `--logpath=PATH`: Set a file path to write your logging output to.
+
+Note that these flags must follow the module name when using a bundled enrichment script.
+For example, to debug the bundled AD799x enrichment script (which itself requires two positional arguments),
+you can set the following for your "Enrichment Script" in Saleae Logic:
+
+```
+python -m saleae_enrichable_analyzer.scripts.i2c.AD799x --loglevel=DEBUG --logpath=/tmp/logic_debug.log 12 0101000
+```
+
+If you're debugging a script you've written, though,
+simply provide the flags following your script path:
+
+```
+python /path/to/your/enrichment/script.py --loglevel=DEBUG --logpath=/tmp/logic_debug.log
+```
+
+Logging messages will continue to be written to stderr regardless of whether you've enabled logging to a file,
+and if you find that the logging output written by your script is not revealing,
+it may be helpful to run Saleae Logic in a terminal to see both the logging output of Saleae Logic and your script interleaved.
