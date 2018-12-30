@@ -28,7 +28,57 @@ To use the development version, just clone this repository and run:
 pip install .
 ```
 
-## Use
+## Bundled enrichment scripts
+
+This library is bundled with support for a handful of enrichment scripts out-of-the-box;
+you can use any of these by using Python's `-m` option.
+See below for details.
+Note that you may need to replace `python` in the examples below with the path to the relevant Python binary (if you installed this library into a virtual environment, that should be that environment's `python`, of course).
+
+### SPI
+
+#### SC16IS75xx
+
+Supports the SC16IS75xx series of SPI UART chips.
+
+Known supported:
+
+* SC16IS740
+* SC16IS750
+* SC16IS752
+* SC16IS760
+* SC16IS762
+
+Usable by using the following enrichment script:
+
+```
+python -m saleae_enrichable_analyzer.scripts.spi.SC16IS75xx
+```
+
+### I2C
+
+#### AD799x
+
+Supports the AD799x series of I2C ADC chips.
+
+Known supported:
+
+* AD7991 (12 bit)
+* AD7995 (10 bit)
+* AD7999 (8 bit)
+
+Usable by using the following enrichment script; be sure to replace
+`BITS` with the number of bits your ADC provides, and `ADDRESS` with
+your device's base-2 I2C address:
+
+```
+python -m saleae_enrichable_analyzer.scripts.i2c.AD799x ADDRESS BITS
+```
+
+Additionally, you can provide the `--reference-voltage=VOLTAGE` argument
+to display the calculated voltage as well as the raw ADC value.
+
+## Writing your own Enrichment Script
 
 Using this is as simple as creating your own module somewhere that subclasses `saleae_enrichable_analyzer.EnrichableAnalyzer` with methods for the features you'd like to use;
 here is a basic example:
@@ -160,3 +210,5 @@ it is useful if your script needs to receive all frames of data in the order the
 ```
 
 Data to display in the tabular "Decoded Protocols" section.
+Due to limitations within Saleae logic: if implemented, this method must return exactly the same number of strings in the result array for each request;
+if you attempt to do otherwise, you may see the following error (sic) "Error: Number of strings in the analyzer results are diffrenet for different display bases" followed by a SIGSEGV.
