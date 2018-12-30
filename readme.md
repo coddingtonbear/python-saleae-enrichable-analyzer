@@ -145,7 +145,7 @@ you can refer to the following:
 https://github.com/coddingtonbear/saleae-enrichable-spi-analyzer/blob/master/examples/simple_SC16IS7xx.py): Implements a simple enricher for displaying register, channel, and data for the SC16IS7xx series of SPI UARTs.
 * [simple_ad7995.py](https://github.com/coddingtonbear/saleae-enrichable-i2c-analyzer/blob/master/examples/simple_ad7995.py): Implements a slightly-more completed enricher for displaying detailed configuration and read data for the AD7995 I2C ADC.
 
-But also be aware that the `scripts` directory contains examples, too,
+Also be aware that the `scripts` directory contains examples, too,
 but they may be somewhat more advanced in functionality.
 
 ### `handle_bubble`
