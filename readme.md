@@ -1,3 +1,5 @@
+WARNING: This project is no longer maintained or necessary!  Saleae added python analyzer support in their latest versions of Logic, and their handling of this problem is much more elegant.
+
 # Python Tools for Enrichable Saleae Analyzers
 
 The built-in analyzers for the Saleae Logic provides you with only a few basic options for how to display the transferred bytes -- as ascii text, or in one of several numeric formats.
